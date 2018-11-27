@@ -77,4 +77,4 @@ app.post('/submit-contact-form', json_parser, function (req, res) {
     });
 })
 
-app.listen({ port: process.env.APP_PORT }, () => { console.log("Server running on port: " + process.env.APP_PORT)})
+app.listen({ port: process.env.PORT }, () => { console.log("Server running on port: " + process.env.PORT)})

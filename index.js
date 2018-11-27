@@ -38,7 +38,7 @@ app.post('/submit-contact-form', json_parser, function (req, res) {
     let services_html = ""
     for (var i in service_map) {
 
-        if (data.services.indexOf(i) !== -1) {
+        if (data.services[i]) {
             services_txt += "   " + service_map[i] + "\r\n"
             services_html += "<li><i>" + service_map[i] + "</i></li>"
         }
@@ -48,13 +48,13 @@ app.post('/submit-contact-form', json_parser, function (req, res) {
         + 'Name: ' + data.name + "\r\n"
         + 'Email: ' + data.email + "\r\n"
         + 'Services: ' + services_txt + "\r\n"
-        + 'Message' + data.message
+        + 'Message: ' + data.message
 
     let html = "<h3>The Innovation Group has received contact request:</h3>"
-        + 'Name: ' + + data.name + '<br>'
+        + 'Name: ' + data.name + '<br>'
         + 'Email: ' + data.email + '<br>'
-        + 'Services: ' + services_html + '<br>'
-        + 'Message' + data.message
+        + 'Services: <ul>' + services_html + '</ul><br>'
+        + 'Message: ' + data.message
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({

@@ -11,7 +11,7 @@ let json_parser = bodyParser.json()
 let email_settings = {
     host: process.env.SMTP_HOST,
     user:  process.env.SMTP_USER,
-    pass: '',
+    pass: process.env.SMTP_PASS,
 }
 
 let service_map = {

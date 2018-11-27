@@ -24,7 +24,7 @@ let service_map = {
 }
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "innovationgroup.tech");
+    res.header("Access-Control-Allow-Origin", "https://innovationgroup.tech");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });

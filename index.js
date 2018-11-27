@@ -74,6 +74,7 @@ app.post('/submit-contact-form', json_parser, function (req, res) {
        
         if (error) { return console.log(error) }
         console.log('Message sent: %s', info.messageId)
+        res.send({ success: true })
     });
 })
 

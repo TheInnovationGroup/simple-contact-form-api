@@ -23,6 +23,12 @@ let service_map = {
     5: 'Maintenance'
 }
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "innovationgroup.tech");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+
 app.post('/submit-contact-form', json_parser, function (req, res) {
     
     if (!req.body) return res.sendStatus(400)

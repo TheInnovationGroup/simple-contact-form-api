@@ -1,0 +1,80 @@
+let express = require('express')
+let bodyParser = require('body-parser')
+let app = express()
+let nodemailer = require('nodemailer')
+
+require('dotenv').config()
+
+let form_parser = bodyParser.urlencoded({ extended: false })
+let json_parser = bodyParser.json()
+
+let email_settings = {
+    host: process.env.SMTP_HOST,
+    user:  process.env.SMTP_USER,
+    pass: '',
+}
+
+let service_map = {
+    0: 'Analytics / BI',
+    1: 'Application Development',
+    2: 'Databases / Data Processing',
+    3: 'General Consulting',
+    4: 'Website Design',
+    5: 'Maintenance'
+}
+
+app.post('/submit-contact-form', json_parser, function (req, res) {
+    
+    if (!req.body) return res.sendStatus(400)
+    var data = req.body;
+
+    let services_txt = "\r\n";
+    let services_html = ""
+    for (var i in service_map) {
+
+        if (data.services.indexOf(i) !== -1) {
+            services_txt += "   " + service_map[i] + "\r\n"
+            services_html += "<li><i>" + service_map[i] + "</i></li>"
+        }
+    }
+
+    let text = "The Innovation Group has received a contact request: \r\n"
+        + 'Name: ' + data.name + "\r\n"
+        + 'Email: ' + data.email + "\r\n"
+        + 'Services: ' + services_txt + "\r\n"
+        + 'Message' + data.message
+
+    let html = "<h3>The Innovation Group has received contact request:</h3>"
+        + 'Name: ' + + data.name + '<br>'
+        + 'Email: ' + data.email + '<br>'
+        + 'Services: ' + services_html + '<br>'
+        + 'Message' + data.message
+
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+        host: email_settings.host,
+        port: 587,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            user: email_settings.user, // generated ethereal user
+            pass: email_settings.pass // generated ethereal password
+        }
+    })
+
+    // setup email data with unicode symbols
+    let mailOptions = {
+        from: '"The Innovation Group" <the-innovation-group@outlook.com>', // sender address
+        to: email_settings.user, // list of receivers
+        subject: 'Contact request from ' + data.name, // Subject line
+        text: text, // plain text body
+        html: html // html body
+    }
+
+    transporter.sendMail(mailOptions, (error, info) => {
+       
+        if (error) { return console.log(error) }
+        console.log('Message sent: %s', info.messageId)
+    });
+})
+
+app.listen({ port: process.env.APP_PORT }, () => { console.log("Server running on port: " + process.env.APP_PORT)})

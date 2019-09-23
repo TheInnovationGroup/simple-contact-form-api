@@ -14,14 +14,14 @@ let email_settings = {
     pass: process.env.SMTP_PASS,
 }
 
-let service_map = {
-    0: 'Analytics / BI',
-    1: 'Application Development',
-    2: 'Databases / Data Processing',
-    3: 'General Consulting',
-    4: 'Website Design',
-    5: 'Maintenance'
-}
+// let service_map = {
+//     0: 'Analytics / BI',
+//     1: 'Application Development',
+//     2: 'Databases / Data Processing',
+//     3: 'General Consulting',
+//     4: 'Website Design',
+//     5: 'Maintenance'
+// }
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "https://innovationgroup.tech");
@@ -34,27 +34,31 @@ app.post('/submit-contact-form', json_parser, function (req, res) {
     if (!req.body) return res.sendStatus(400)
     var data = req.body;
 
-    let services_txt = "\r\n";
-    let services_html = ""
-    for (var i in service_map) {
+    // let services_txt = "\r\n";
+    // let services_html = ""
+    // for (var i in service_map) {
 
-        if (data.services[i]) {
-            services_txt += "   " + service_map[i] + "\r\n"
-            services_html += "<li><i>" + service_map[i] + "</i></li>"
-        }
-    }
+    //     if (data.services[i]) {
+    //         services_txt += "   " + service_map[i] + "\r\n"
+    //         services_html += "<li><i>" + service_map[i] + "</i></li>"
+    //     }
+    // }
 
-    let text = "The Innovation Group has received a contact request: \r\n"
+    let text = "LevelUP has received a contact request: \r\n"
         + 'Name: ' + data.name + "\r\n"
         + 'Email: ' + data.email + "\r\n"
-        + 'Services: ' + services_txt + "\r\n"
-        + 'Message: ' + data.message
+        + 'Phone: ' + data.phone + "\r\n"
+        + 'Company: ' + data.company + "\r\n"
+        + 'Budget: ' + data.budget + "\r\n"
+        + 'Estimate: ' + data.estimate
 
-    let html = "<h3>The Innovation Group has received contact request:</h3>"
-        + 'Name: ' + data.name + '<br>'
-        + 'Email: ' + data.email + '<br>'
-        + 'Services: <ul>' + services_html + '</ul><br>'
-        + 'Message: ' + data.message
+    let html = "<h3>LevelUP has received contact request:</h3>"
+        + 'Name: ' + data.name + "<br>"
+        + 'Email: ' + data.email + "<br>"
+        + 'Phone: ' + data.phone + "<br>"
+        + 'Company: ' + data.company + "<br>"
+        + 'Budget: ' + data.budget + "<br>"
+        + 'Estimate: ' + data.estimate
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({

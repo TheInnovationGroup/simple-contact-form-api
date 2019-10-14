@@ -24,7 +24,7 @@ let email_settings = {
 // }
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "https://innovationgroup.tech");
+    res.header("Access-Control-Allow-Origin", "https://lvl-up.tech");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
